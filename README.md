@@ -1,8 +1,6 @@
 # 🚀 Image Filtering Application
 
-## 📂 **About this program**
-
-## 📂 Overview
+## 📂 ***About this program***
 
 A Python script that automates the process of organizing and filtering image files from your computer.
 
@@ -42,13 +40,7 @@ You can choose to either keep or delete the original files after copying. This i
 - Creating organized archives of images
 - Removing duplicate images from the source location if desired
 
-```python
-# Example usage:
-python imageFilter.py
-# Follow the prompts to select source folder and cleanup options
-```
-
-## 📂 **Instructions to run this program**
+## 📂 ***Instructions to run this program***
 
 ## 📂 Requirements
 
