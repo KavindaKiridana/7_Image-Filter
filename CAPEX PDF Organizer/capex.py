@@ -1,4 +1,3 @@
-
 """
 CAPEX PDF Organizer
 Created for organizing IT Requisition PDF files.
@@ -136,101 +135,105 @@ def get_company_folder(base_folder, company_code):
 # MAIN
 # ----------------------------------------------------------
 
-print("\n========== CAPEX PDF ORGANIZER ==========\n")
+if __name__ == "__main__":
 
-downloads_folder = get_downloads_folder()
+    print("\n========== CAPEX PDF ORGANIZER ==========\n")
 
-if not os.path.exists(downloads_folder):
-    print("Downloads folder not found.")
-    exit()
+    downloads_folder = get_downloads_folder()
 
-answer = input(
-    'Press "y" to REMOVE original files after moving.\n'
-    'Press any other key to COPY only.\n\n'
-    'Your choice: '
-).lower()
+    if not os.path.exists(downloads_folder):
+        print("Downloads folder not found.")
+        input("\nPress Enter to exit...")
+        exit()
 
-delete_original = answer == "y"
+    answer = input(
+        'Press "y" to REMOVE original files after moving.\n'
+        'Press any other key to COPY only.\n\n'
+        'Your choice: '
+    ).lower()
 
-base_folder = create_base_folder()
+    delete_original = answer == "y"
 
-processed_count = 0
+    base_folder = create_base_folder()
 
-for file_name in os.listdir(downloads_folder):
+    processed_count = 0
 
-    match = PDF_PATTERN.match(file_name)
+    for file_name in os.listdir(downloads_folder):
 
-    if not match:
-        continue
+        match = PDF_PATTERN.match(file_name)
 
-    company_code = match.group(1).upper()
-    year = match.group(2)
-    serial = match.group(3)
+        if not match:
+            continue
 
-    requisition_folder_name = (
-        f"{company_code}_{year}_{serial}"
-    )
+        company_code = match.group(1).upper()
+        year = match.group(2)
+        serial = match.group(3)
 
-    source_file = os.path.join(
-        downloads_folder,
-        file_name
-    )
-
-    company_folder = get_company_folder(
-        base_folder,
-        company_code
-    )
-
-    year_folder = os.path.join(
-        company_folder,
-        year
-    )
-
-    os.makedirs(year_folder, exist_ok=True)
-
-    requisition_folder = os.path.join(
-        year_folder,
-        requisition_folder_name
-    )
-
-    os.makedirs(requisition_folder, exist_ok=True)
-
-    destination_file = os.path.join(
-        requisition_folder,
-        file_name
-    )
-
-    try:
-
-        if delete_original:
-
-            shutil.move(
-                source_file,
-                destination_file
-            )
-
-            print(f"MOVED  : {file_name}")
-
-        else:
-
-            shutil.copy2(
-                source_file,
-                destination_file
-            )
-
-            print(f"COPIED : {file_name}")
-
-        processed_count += 1
-
-    except Exception as e:
-
-        print(
-            f"ERROR processing "
-            f"{file_name}: {e}"
+        requisition_folder_name = (
+            f"{company_code}_{year}_{serial}"
         )
 
-print("\n-----------------------------------")
-print(f"Processed Files : {processed_count}")
-print("Completed.")
-print("-----------------------------------\n")
+        source_file = os.path.join(
+            downloads_folder,
+            file_name
+        )
 
+        company_folder = get_company_folder(
+            base_folder,
+            company_code
+        )
+
+        year_folder = os.path.join(
+            company_folder,
+            year
+        )
+
+        os.makedirs(year_folder, exist_ok=True)
+
+        requisition_folder = os.path.join(
+            year_folder,
+            requisition_folder_name
+        )
+
+        os.makedirs(requisition_folder, exist_ok=True)
+
+        destination_file = os.path.join(
+            requisition_folder,
+            file_name
+        )
+
+        try:
+
+            if delete_original:
+
+                shutil.move(
+                    source_file,
+                    destination_file
+                )
+
+                print(f"MOVED  : {file_name}")
+
+            else:
+
+                shutil.copy2(
+                    source_file,
+                    destination_file
+                )
+
+                print(f"COPIED : {file_name}")
+
+            processed_count += 1
+
+        except Exception as e:
+
+            print(
+                f"ERROR processing "
+                f"{file_name}: {e}"
+            )
+
+    print("\n-----------------------------------")
+    print(f"Processed Files : {processed_count}")
+    print("Completed.")
+    print("-----------------------------------\n")
+
+    input("Press Enter to exit...")
